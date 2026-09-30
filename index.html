@@ -1,1014 +1,467 @@
 <!DOCTYPE html>
-<html lang="ms">
+<html lang="ms" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GLOBAL 2040: THE LAST CLASSROOM</title>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modul Digital Globalisasi Pendidikan & Misi Pendidik Global</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
+          colors: {
+            edu: { 50: '#f4f8f6', 100: '#e3ece8', 500: '#0d9488', 600: '#0f766e', 700: '#115e59', 800: '#134e4a', 900: '#042f2e' },
+            accent: { gold: '#f59e0b', dark: '#0f172a' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .perspective-1000 { perspective: 1000px; }
+    .transform-style-3d { transform-style: preserve-3d; }
+    .backface-hidden { backface-visibility: hidden; }
+    .rotate-y-180 { transform: rotateY(180deg); }
     
-    <style>
-        /* ==========================================================================
-           GLOBAL & FUTURISTIC THEME STYLES (GLOBAL 2040)
-           ========================================================================== */
-
-        :root {
-            --bg-dark: #050b14;
-            --panel-bg: rgba(10, 25, 47, 0.85);
-            --primary-cyan: #00f0ff;
-            --accent-purple: #8a2be2;
-            --warning-red: #ff2a6d;
-            --text-white: #e0f7fa;
-            --text-dim: #8892b0;
-            --border-cyan: rgba(0, 240, 255, 0.3);
-            --font-heading: 'Orbitron', sans-serif;
-            --font-body: 'Rajdhani', sans-serif;
-            --font-mono: 'Share Tech Mono', monospace;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-white);
-            font-family: var(--font-body);
-            font-size: 18px;
-            line-height: 1.5;
-            min-height: 100vh;
-            overflow-x: hidden;
-            background-image: 
-                radial-gradient(circle at 50% 50%, rgba(138, 43, 226, 0.1) 0%, transparent 60%),
-                linear-gradient(to bottom, #02050a, #0a192f);
-        }
-
-        /* Background Cyber Grid */
-        .cyber-bg-grid {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background-size: 40px 40px;
-            background-image: 
-                linear-gradient(to right, rgba(0, 240, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        /* Header HUD */
-        #hud-bar {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            height: 60px;
-            background: rgba(5, 11, 20, 0.95);
-            border-bottom: 2px solid var(--primary-cyan);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 20px;
-            z-index: 1000;
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
-            font-family: var(--font-mono);
-        }
-
-        .hud-label { color: var(--text-dim); }
-        .hud-val { color: var(--primary-cyan); font-weight: bold; }
-
-        .hud-stats {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-
-        #sound-toggle {
-            background: transparent;
-            border: 1px solid var(--primary-cyan);
-            color: var(--primary-cyan);
-            padding: 4px 10px;
-            cursor: pointer;
-            font-family: var(--font-mono);
-            border-radius: 4px;
-        }
-
-        /* Layout Screens */
-        #app {
-            position: relative;
-            z-index: 1;
-            padding-top: 80px;
-            padding-bottom: 40px;
-            max-width: 900px;
-            margin: 0 auto;
-            padding-left: 20px;
-            padding-right: 20px;
-        }
-
-        .screen {
-            display: none;
-            animation: fadeIn 0.4s ease-in-out;
-        }
-
-        .screen.active {
-            display: block;
-        }
-
-        .hidden { display: none !important; }
-
-        /* HUD Card Panel */
-        .card-panel {
-            background: var(--panel-bg);
-            border: 1px solid var(--border-cyan);
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.15), inset 0 0 15px rgba(0, 240, 255, 0.05);
-            border-radius: 8px;
-            padding: 30px;
-            backdrop-filter: blur(5px);
-            position: relative;
-            margin-bottom: 20px;
-        }
-
-        .mission-badge {
-            display: inline-block;
-            background: rgba(0, 240, 255, 0.1);
-            color: var(--primary-cyan);
-            border: 1px solid var(--primary-cyan);
-            padding: 4px 12px;
-            font-family: var(--font-mono);
-            font-size: 14px;
-            border-radius: 4px;
-            margin-bottom: 15px;
-        }
-
-        .mission-badge.danger {
-            background: rgba(255, 42, 109, 0.1);
-            color: var(--warning-red);
-            border-color: var(--warning-red);
-        }
-
-        /* Headings */
-        h1, h2, h3, h4 {
-            font-family: var(--font-heading);
-            letter-spacing: 1px;
-            color: #ffffff;
-        }
-
-        h1 { font-size: 2.2rem; text-shadow: 0 0 10px var(--primary-cyan); }
-        h2 { font-size: 1.6rem; color: var(--primary-cyan); margin-bottom: 10px; }
-        .sub-title { font-family: var(--font-heading); color: var(--accent-purple); margin-bottom: 15px; }
-        .tagline { font-style: italic; color: var(--text-dim); margin-bottom: 20px; }
-
-        /* Buttons */
-        .btn-primary, .btn-option, .btn-danger-glow {
-            font-family: var(--font-heading);
-            padding: 12px 24px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-transform: uppercase;
-            font-weight: 600;
-        }
-
-        .btn-primary {
-            background: linear-gradient(45deg, var(--accent-purple), var(--primary-cyan));
-            color: #000;
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
-            width: 100%;
-            margin-top: 15px;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 25px rgba(0, 240, 255, 0.8);
-        }
-
-        .btn-option {
-            background: rgba(10, 25, 47, 0.9);
-            border: 1px solid var(--primary-cyan);
-            color: var(--text-white);
-            text-align: left;
-            width: 100%;
-            margin-bottom: 10px;
-            font-family: var(--font-body);
-            font-size: 1.1rem;
-            padding: 12px;
-        }
-
-        .btn-option:hover {
-            background: rgba(0, 240, 255, 0.2);
-            border-color: #ffffff;
-        }
-
-        .btn-danger-glow {
-            background: linear-gradient(45deg, #800020, var(--warning-red));
-            color: #fff;
-            box-shadow: 0 0 20px rgba(255, 42, 109, 0.6);
-            width: 100%;
-            font-size: 1.1rem;
-        }
-
-        /* Dialog & Scenario Box */
-        .dialog-box {
-            background: rgba(0, 0, 0, 0.5);
-            border-left: 4px solid var(--primary-cyan);
-            padding: 15px;
-            font-family: var(--font-mono);
-            margin-bottom: 20px;
-        }
-
-        .scenario-text {
-            font-size: 1.1rem;
-            color: var(--text-white);
-            margin-bottom: 15px;
-            background: rgba(0,0,0,0.3);
-            padding: 12px;
-            border-radius: 4px;
-        }
-
-        .evidence-box {
-            background: rgba(0,0,0,0.4);
-            border: 1px dashed var(--border-cyan);
-            padding: 15px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-        }
-
-        .evidence-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .evidence-tags span {
-            background: rgba(0, 240, 255, 0.15);
-            border: 1px solid var(--primary-cyan);
-            color: var(--primary-cyan);
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-family: var(--font-mono);
-            font-size: 0.85rem;
-        }
-
-        /* Global Map Elements */
-        .map-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .mission-node {
-            background: rgba(10, 25, 47, 0.9);
-            border: 2px solid var(--border-cyan);
-            border-radius: 8px;
-            padding: 15px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .mission-node.unlocked {
-            border-color: var(--primary-cyan);
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
-        }
-
-        .mission-node.unlocked:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 25px rgba(0, 240, 255, 0.6);
-        }
-
-        .mission-node.locked {
-            opacity: 0.4;
-            cursor: not-allowed;
-            border-color: #444;
-        }
-
-        .node-icon { font-size: 2rem; margin-bottom: 5px; }
-        .node-label { font-family: var(--font-mono); font-size: 0.8rem; color: var(--primary-cyan); }
-        .node-title { font-family: var(--font-heading); font-size: 0.85rem; }
-
-        /* M2 File Cards */
-        .file-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .file-card {
-            background: rgba(0,0,0,0.4);
-            border: 1px dashed var(--primary-cyan);
-            padding: 15px;
-            border-radius: 6px;
-            cursor: pointer;
-            text-align: center;
-        }
-
-        .file-card:hover { background: rgba(0, 240, 255, 0.1); }
-        .file-icon { font-size: 2rem; }
-        .file-name { font-family: var(--font-heading); color: var(--primary-cyan); margin: 5px 0; }
-        .file-desc { font-size: 0.95rem; color: #fff; margin-top: 10px; }
-
-        /* M4 Interactive Cards */
-        .m4-card-item {
-            background: rgba(10, 25, 47, 0.95);
-            border: 1px solid var(--primary-cyan);
-            border-radius: 6px;
-            padding: 20px;
-            margin-bottom: 15px;
-        }
-
-        .m4-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .btn-opp {
-            background: rgba(0, 240, 255, 0.2);
-            border: 1px solid var(--primary-cyan);
-            color: #fff;
-            flex: 1;
-            padding: 12px;
-            cursor: pointer;
-            font-family: var(--font-heading);
-            border-radius: 4px;
-        }
-
-        .btn-cha {
-            background: rgba(255, 42, 109, 0.2);
-            border: 1px solid var(--warning-red);
-            color: #fff;
-            flex: 1;
-            padding: 12px;
-            cursor: pointer;
-            font-family: var(--font-heading);
-            border-radius: 4px;
-        }
-
-        .btn-opp:hover { background: rgba(0, 240, 255, 0.4); }
-        .btn-cha:hover { background: rgba(255, 42, 109, 0.4); }
-
-        /* Feedback Panel */
-        .feedback-panel {
-            background: rgba(0, 0, 0, 0.85);
-            border-left: 4px solid var(--primary-cyan);
-            padding: 15px;
-            margin-top: 15px;
-            font-family: var(--font-mono);
-            font-size: 0.95rem;
-            border-radius: 0 4px 4px 0;
-        }
-
-        .feedback-panel.correct { border-left-color: #00ff66; color: #b3ffcc; }
-        .feedback-panel.wrong { border-left-color: var(--warning-red); color: #ffccd5; }
-
-        /* Summary & Checklist */
-        .teacher-checklist {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin: 20px 0;
-        }
-
-        .check-container {
-            background: rgba(0,0,0,0.3);
-            padding: 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 1rem;
-        }
-
-        .summary-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .summary-card {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid var(--border-cyan);
-            padding: 15px;
-            border-radius: 6px;
-        }
-
-        .summary-card h4 { color: var(--primary-cyan); margin-bottom: 5px; font-size: 1rem; }
-
-        .mission-objectives ul {
-            list-style: none;
-            margin: 15px 0;
-        }
-
-        .mission-objectives li {
-            margin-bottom: 8px;
-            font-size: 1.05rem;
-        }
-
-        .cyan-text { color: var(--primary-cyan); }
-        .cyber-hr { border: 0; height: 1px; background: var(--border-cyan); margin: 20px 0; }
-        .margin-top { margin-top: 20px; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Responsive Mobile UI */
-        @media (max-width: 768px) {
-            #hud-bar { font-size: 13px; padding: 0 10px; }
-            h1 { font-size: 1.6rem; }
-            h2 { font-size: 1.3rem; }
-            #app { padding-left: 10px; padding-right: 10px; }
-            .m4-actions { flex-direction: column; }
-        }
-    </style>
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 15px rgba(245, 158, 11, 0.3); }
+      50% { box-shadow: 0 0 25px rgba(245, 158, 11, 0.6); }
+    }
+    .game-card-glow { animation: pulse-glow 3s infinite; }
+  </style>
 </head>
-<body>
+<body class="bg-[#F8FAFC] dark:bg-slate-900 text-slate-800 dark:text-slate-100 font-sans transition-colors duration-300">
 
-    <!-- HUD Overlay Top Bar -->
-    <header id="hud-bar" class="hidden">
-        <div class="agent-info">
-            <span class="hud-label">AGENT:</span> <span class="hud-val">GLOBAL AGENT</span>
+  <!-- HEADER -->
+  <header class="bg-edu-900 text-white border-b border-edu-700 sticky top-0 z-50 shadow-md">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 bg-edu-500 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-inner">
+          <i class="fa-solid fa-compass-drafting"></i>
         </div>
-        <div class="hud-stats">
-            <div class="stat-box">
-                <span class="hud-label">SCORE:</span> <span id="current-score" class="hud-val">0</span>
-            </div>
-            <div class="stat-box">
-                <span class="hud-label">CLUES:</span> <span id="clue-count" class="hud-val">0/5</span>
-            </div>
-            <button id="sound-toggle" onclick="toggleAudio()">🔊 SOUND</button>
+        <div>
+          <h1 class="font-extrabold text-lg tracking-tight leading-none text-white">Akademi Pendidikan 21</h1>
+          <span class="text-[11px] text-edu-100 opacity-80">Modul Lengkap PDF & Game Misi Pendidik Global</span>
         </div>
-    </header>
+      </div>
+      
+      <div class="flex items-center space-x-6 text-sm font-medium">
+        <a href="#nota" class="hidden md:inline-block hover:text-edu-50 transition"><i class="fa-solid fa-book-open mr-1"></i> Nota Lengkap</a>
+        <a href="#game-section" class="hidden md:inline-block hover:text-edu-50 transition text-amber-400 font-bold"><i class="fa-solid fa-gamepad mr-1"></i> Misi Interaktif</a>
+        <button id="themeToggle" class="p-2 rounded-lg bg-edu-800 hover:bg-edu-700 text-edu-100 transition border border-edu-700">
+          <i class="fa-solid fa-moon dark:hidden"></i>
+          <i class="fa-solid fa-sun hidden dark:block text-amber-400"></i>
+        </button>
+      </div>
+    </div>
+  </header>
 
-    <!-- MAIN CONTAINER -->
-    <main id="app">
+  <!-- HERO BANNER -->
+  <section class="relative bg-slate-900 text-white py-16 px-6 overflow-hidden">
+    <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1600&auto=format&fit=crop" alt="Latar Pembelajaran" class="absolute inset-0 w-full h-full object-cover opacity-20 filter brightness-75">
+    <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/80 to-transparent"></div>
+    
+    <div class="max-w-5xl mx-auto text-center space-y-6 relative z-10">
+      <span class="bg-accent-gold/20 text-accent-gold border border-accent-gold/30 text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest inline-flex items-center gap-2">
+        <i class="fa-solid fa-graduation-cap"></i> Modul Digital + Simulasi Pengajaran
+      </span>
+      <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight leading-tight">
+        Globalisasi Pendidikan & Cabaran Warga Pendidik
+      </h2>
+      <p class="text-slate-300 max-w-3xl mx-auto text-sm md:text-base leading-relaxed">
+        Penerangan komprehensif mengikut silibus penuh dokumen PDF serta simulasi keputusan menerusi Game Misi Pendidik Global[span_1](start_span)[span_1](end_span).
+      </p>
+    </div>
+  </section>
 
-        <!-- 1. HOMEPAGE / INTRO SCREEN -->
-        <section id="screen-intro" class="screen active">
-            <div class="cyber-bg-grid"></div>
-            <div class="intro-container card-panel">
-                <h1>GLOBAL 2040</h1>
-                <h2 class="sub-title">THE LAST CLASSROOM</h2>
-                <p class="tagline">“Dunia berubah. Pendidikan turut berubah. Adakah anda bersedia?”</p>
-                
-                <div class="dialog-box">
-                    <p>Welcome, Global Education Agent. Rangkaian pendidikan dunia sedang mengalami fasa transformasi globalisasi yang kritikal. Siasat perubahan, kenal pasti cabaran & peluang, serta bina profil guru masa depan.</p>
-                </div>
+  <main id="nota" class="max-w-6xl mx-auto px-6 py-12 space-y-16">
 
-                <div class="mission-objectives">
-                    <h3>MISSION OBJECTIVES</h3>
-                    <ul>
-                        <li>🌍 Understand Globalisation</li>
-                        <li>🔎 Discover Global Connections</li>
-                        <li>💻 Investigate Digital Education</li>
-                        <li>⚠️ Identify Opportunities & Challenges</li>
-                        <li>👨‍🏫 Build the Future Teacher</li>
-                    </ul>
-                </div>
+    <!-- SEKSYEN 1: DEFINISI & PERKAMPUNGAN GLOBAL -->
+    <section class="space-y-6">
+      <div class="flex items-center space-x-3 border-b border-slate-200 dark:border-slate-700 pb-4">
+        <div class="p-3 bg-edu-500 text-white rounded-xl shadow-md">
+          <i class="fa-solid fa-globe text-xl"></i>
+        </div>
+        <div>
+          <h3 class="text-2xl font-bold">1. Pengenalan & Perkampungan Global</h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400">Takrifan dan latar belakang sejarah globalisasi[span_2](start_span)[span_2](end_span).</p>
+        </div>
+      </div>
 
-                <button class="btn-primary" onclick="startInvestigation()">START INVESTIGATION</button>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 space-y-3">
+          <span class="text-xs font-bold text-edu-600 bg-edu-50 dark:bg-edu-900/40 px-3 py-1 rounded-full uppercase">Perkampungan Global</span>
+          <h4 class="font-bold text-base">Konsep Perkembangan Teknologi (Perkins, 1992; Tun Dr. Mahathir, 1992)</h4>
+          <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+            Perkembangan pesat IT menjadikan dunia seperti sebuah perkampungan kecil tanpa sempadan fizikal[span_3](start_span)[span_3](end_span). Masyarakat dunia berkongsi maklumat dan isu universal seperti pencemaran, wabak penyakit, masalah dadah, dan pendidikan[span_4](start_span)[span_4](end_span).
+          </p>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 space-y-3">
+          <span class="text-xs font-bold text-amber-600 bg-amber-50 dark:bg-amber-900/40 px-3 py-1 rounded-full uppercase">Sejarah Istilah</span>
+          <h4 class="font-bold text-base">Penerbitan Buku 'Toward New Education' (1930)</h4>
+          <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+            Penggunaan terawal istilah <em>globalization</em> dicatatkan pada tahun 1930 untuk menggambarkan liputan pengasahan potensi manusia secara menyeluruh[span_5](start_span)[span_5](end_span).
+          </p>
+        </div>
+      </div>
+
+      <!-- 4 ASPEK IMF -->
+      <div class="bg-slate-100 dark:bg-slate-800/60 p-6 rounded-2xl space-y-4 border border-slate-200 dark:border-slate-700">
+        <h4 class="font-bold text-xs uppercase text-slate-500 tracking-wider">4 Aspek Utama Globalisasi (IMF, 2000)[span_6](start_span)[span_6](end_span)</h4>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+            <i class="fa-solid fa-right-left text-edu-500 text-xl mb-2"></i>
+            <h5 class="font-bold text-xs">1. Perdagangan</h5>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400">Pertukaran barang & perkhidmatan pendidikan[span_7](start_span)[span_7](end_span).</p>
+          </div>
+          <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+            <i class="fa-solid fa-money-bill-trend-up text-emerald-500 text-xl mb-2"></i>
+            <h5 class="font-bold text-xs">2. Pergerakan Modal</h5>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400">Pelaburan asing (FDI) & aliran kewangan[span_8](start_span)[span_8](end_span).</p>
+          </div>
+          <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+            <i class="fa-solid fa-people-carry-box text-purple-500 text-xl mb-2"></i>
+            <h5 class="font-bold text-xs">3. Pergerakan Manusia</h5>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400">Mobiliti pakar, tenaga kerja & pelajar[span_9](start_span)[span_9](end_span).</p>
+          </div>
+          <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+            <i class="fa-solid fa-book-atlas text-amber-500 text-xl mb-2"></i>
+            <h5 class="font-bold text-xs">4. Penyebaran Ilmu</h5>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400">Akses maklumat & dapatan kajian global[span_10](start_span)[span_10](end_span).</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEKSYEN 2: IMPAK LENGKAP WARGA PENDIDIK DI MALAYSIA -->
+    <section class="space-y-6">
+      <div class="flex items-center space-x-3 border-b border-slate-200 dark:border-slate-700 pb-4">
+        <div class="p-3 bg-emerald-600 text-white rounded-xl shadow-md">
+          <i class="fa-solid fa-chalkboard-user text-xl"></i>
+        </div>
+        <div>
+          <h3 class="text-2xl font-bold">2. Implikasi Lengkap Terhadap Warga Pendidik di Malaysia</h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400">8 Kesan Positif & 6 Cabaran utama mengikut PDF[span_11](start_span)[span_11](end_span).</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- 8 POSITIF -->
+        <div class="bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-800 p-6 rounded-2xl space-y-3">
+          <h4 class="font-bold text-base text-emerald-700 dark:text-emerald-400 flex items-center gap-2">
+            <i class="fa-solid fa-circle-check"></i> 8 Kesan Positif Utama[span_12](start_span)[span_12](end_span)
+          </h4>
+          <ol class="list-decimal list-inside space-y-2 text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+            <li><strong>Budaya pembelajaran sepanjang hayat:</strong> Menggalakkan penerokaan ilmu tanpa had masa/usia[span_13](start_span)[span_13](end_span).</li>
+            <li><strong>Penguasaan dwibahasa:</strong> Kemahiran Bahasa Melayu dan Bahasa Inggeris untuk komunikasi antarabangsa[span_14](start_span)[span_14](end_span).</li>
+            <li><strong>Penguasaan ICT:</strong> Kemahiran pedagogi berasaskan peranti moden melangkaui ruang fizikal[span_15](start_span)[span_15](end_span).</li>
+            <li><strong>Pensiswazahan guru:</strong> Peningkatan kelayakan akademik tenaga pengajar sekolah[span_16](start_span)[span_16](end_span).</li>
+            <li><strong>Perkongsian kajian P&P:</strong> Akses hasil penyelidikan dan jurnal peringkat antarabangsa[span_17](start_span)[span_17](end_span).</li>
+            <li><strong>Peningkatan kualiti pendidikan:</strong> Standard pengajaran disesuaikan mengikut piawaian global[span_18](start_span)[span_18](end_span).</li>
+            <li><strong>Peluang kerjaya antarabangsa:</strong> Keupayaan berkhidmat di institusi pendidikan luar negara[span_19](start_span)[span_19](end_span).</li>
+            <li><strong>Pemikiran berasaskan kelebihan berbanding:</strong> Mengaplikasi Model Heckscher-Ohlin (HO) dalam kemahiran[span_20](start_span)[span_20](end_span).</li>
+          </ol>
+        </div>
+
+        <!-- 6 NEGATIF -->
+        <div class="bg-rose-50/50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-800 p-6 rounded-2xl space-y-3">
+          <h4 class="font-bold text-base text-rose-700 dark:text-rose-400 flex items-center gap-2">
+            <i class="fa-solid fa-triangle-exclamation"></i> 6 Cabaran & Risiko Utama[span_21](start_span)[span_21](end_span)
+          </h4>
+          <ol class="list-decimal list-inside space-y-2 text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+            <li><strong>Pengaliran keluar tenaga pakar (Brain Drain):</strong> Penghijrahan pakar tempatan ke luar negara[span_22](start_span)[span_22](end_span).</li>
+            <li><strong>Peminggiran Bahasa Melayu:</strong> Risiko penguasaan bahasa ibunda terhakis oleh bahasa komersial[span_23](start_span)[span_23](end_span).</li>
+            <li><strong>Komersialisasi pendidikan:</strong> Risiko mengutamakan keuntungan berbanding kualiti/kebajikan[span_24](start_span)[span_24](end_span).</li>
+            <li><strong>Penyebaran maklumat unverified:</strong> Risiko pengaruh budaya luar yang terpesong daripada moral[span_25](start_span)[span_25](end_span).</li>
+            <li><strong>Jurang pengangguran:</strong> Ketidakpadanan kemahiran graduan dengan keperluan pasaran[span_26](start_span)[span_26](end_span).</li>
+            <li><strong>Persaingan institusi awam vs swasta:</strong> Tekanan komersial terhadap sekolah & universiti awam[span_27](start_span)[span_27](end_span).</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEKSYEN 3: ANALISIS FALSAFAH PENDIDIKAN -->
+    <section class="bg-slate-900 text-white p-8 rounded-3xl space-y-6 shadow-xl">
+      <div class="flex items-center space-x-3">
+        <div class="p-3 bg-accent-gold text-slate-900 rounded-xl font-bold">
+          <i class="fa-solid fa-brain text-xl"></i>
+        </div>
+        <div>
+          <h3 class="text-2xl font-bold">3. Analisis Falsafah Pendidikan</h3>
+          <p class="text-xs text-slate-300">Epistemologi, Ontologi, dan Metodologi[span_28](start_span)[span_28](end_span).</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
+        <div class="bg-white/10 backdrop-blur-md p-5 rounded-2xl border border-white/10 space-y-2">
+          <span class="text-accent-gold font-bold uppercase text-[10px]">I. Epistemologi</span>
+          <h4 class="font-bold text-sm text-white">Rasionalisme vs Non-Rasionalis</h4>
+          <p class="text-slate-300 leading-relaxed">
+            Meskipun wujud kebangkitan anti-rasionalis, rasionalisme tetap menjadi teras kebenaran saintifik dalam sistem pendidikan moden[span_29](start_span)[span_29](end_span).
+          </p>
+        </div>
+
+        <div class="bg-white/10 backdrop-blur-md p-5 rounded-2xl border border-white/10 space-y-2">
+          <span class="text-accent-gold font-bold uppercase text-[10px]">II. Ontologi</span>
+          <h4 class="font-bold text-sm text-white">Maya vs Sempadan Fizikal</h4>
+          <p class="text-slate-300 leading-relaxed">
+            Konsep 'dunia tanpa sempadan' terhad di alam maya; undang-undang fizikal negara (keperluan pasport) kekal berkuat kuasa[span_30](start_span)[span_30](end_span).
+          </p>
+        </div>
+
+        <div class="bg-white/10 backdrop-blur-md p-5 rounded-2xl border border-white/10 space-y-2">
+          <span class="text-accent-gold font-bold uppercase text-[10px]">III. Metodologi</span>
+          <h4 class="font-bold text-sm text-white">Pedagogi E-Learning</h4>
+          <p class="text-slate-300 leading-relaxed">
+            Kaedah pengajaran bertukar kepada ijazah francais, e-learning, bilik darjah maya, dan carian maklumat digital[span_31](start_span)[span_31](end_span).
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- GAME SECTION: MISI PENDIDIK GLOBAL -->
+    <section id="game-section" class="relative bg-slate-950 border-2 border-amber-500/50 rounded-3xl p-6 md:p-10 text-white shadow-2xl overflow-hidden game-card-glow">
+      <!-- Background Graphic Elements -->
+      <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -left-10 -top-10 w-64 h-64 bg-edu-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <!-- GAME DASHBOARD HEADER -->
+      <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-6">
+        <div class="flex items-center space-x-4">
+          <div class="w-14 h-14 bg-gradient-to-tr from-amber-500 to-amber-300 text-slate-950 rounded-2xl flex items-center justify-center font-black text-2xl shadow-lg">
+            <i class="fa-solid fa-gamepad"></i>
+          </div>
+          <div>
+            <div class="flex items-center space-x-2">
+              <span class="bg-amber-400/20 text-amber-400 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider">Simulasi Interaktif</span>
+              <span class="text-slate-400 text-xs">• Adaptasi Sistem Pilihan Strategik</span>
             </div>
-        </section>
+            <h3 class="text-2xl font-extrabold tracking-tight text-white mt-0.5">Misi Pendidik Global</h3>
+          </div>
+        </div>
 
-        <!-- 2. GLOBAL MAP SCREEN -->
-        <section id="screen-map" class="screen hidden">
-            <div class="card-panel">
-                <h2>GLOBAL INVESTIGATION MAP</h2>
-                <p>Pilih zon misi untuk memulakan penyiasatan. Kumpulkan 5 maklumat utama (clues).</p>
+        <!-- STATS BAR -->
+        <div class="flex items-center space-x-4 bg-slate-900/80 p-3 rounded-2xl border border-slate-800">
+          <div class="px-3 border-r border-slate-800">
+            <span class="text-[10px] text-slate-400 block font-semibold uppercase">Mata Reputasi</span>
+            <span id="scoreDisplay" class="text-xl font-extrabold text-amber-400">0 PTS</span>
+          </div>
+          <div class="px-3">
+            <span class="text-[10px] text-slate-400 block font-semibold uppercase">Kemajuan Misi</span>
+            <span id="progressDisplay" class="text-xl font-extrabold text-edu-400">1 / 4</span>
+          </div>
+        </div>
+      </div>
 
-                <div class="map-container">
-                    <div class="mission-node node-1 unlocked" onclick="openMission(1)">
-                        <div class="node-icon">🌍</div>
-                        <div class="node-label">MISSION 01</div>
-                        <div class="node-title">GLOBAL VILLAGE</div>
-                    </div>
+      <!-- MAIN GAME PLAY CONTAINER -->
+      <div id="gamePlayArea" class="relative z-10 pt-8 space-y-6">
+        <!-- Content will be injected dynamically via JavaScript -->
+      </div>
+    </section>
 
-                    <div class="mission-node node-2 locked" id="node-2" onclick="openMission(2)">
-                        <div class="node-icon">🔎</div>
-                        <div class="node-label">MISSION 02</div>
-                        <div class="node-title">FOUR CLUES</div>
-                    </div>
+  </main>
 
-                    <div class="mission-node node-3 locked" id="node-3" onclick="openMission(3)">
-                        <div class="node-icon">💻</div>
-                        <div class="node-label">MISSION 03</div>
-                        <div class="node-title">VIRTUAL UNIV</div>
-                    </div>
+  <!-- FOOTER -->
+  <footer class="bg-edu-900 text-slate-300 py-8 px-6 text-center text-xs border-t border-edu-800 space-y-2">
+    <div class="flex justify-center items-center space-x-2 text-white font-bold text-sm">
+      <i class="fa-solid fa-graduation-cap text-edu-500"></i>
+      <span>Akademi Pendidikan Interaktif 2026</span>
+    </div>
+    <p>© 2026 Modul Pendidikan & Game Misi Pendidik Global. Sedia untuk GitHub Pages[span_32](start_span)[span_32](end_span).</p>
+  </footer>
 
-                    <div class="mission-node node-4 locked" id="node-4" onclick="openMission(4)">
-                        <div class="node-icon">⚠️</div>
-                        <div class="node-label">MISSION 04</div>
-                        <div class="node-title">OPPORTUNITY / THREAT</div>
-                    </div>
+  <script>
+    // Theme Toggle
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+    });
 
-                    <div class="mission-node node-5 locked" id="node-5" onclick="openMission(5)">
-                        <div class="node-icon">👨‍🏫</div>
-                        <div class="node-label">MISSION 05</div>
-                        <div class="node-title">FUTURE TEACHER</div>
-                    </div>
-                </div>
+    // LOGIK SIMULASI MINI-GAME "MISI PENDIDIK GLOBAL"
+    const missions = [
+      {
+        id: 1,
+        title: "KAPITEL 1: Cabaran 'Brain Drain' di Fakulti",
+        category: "Isu Tenaga Pakar",
+        icon: "fa-user-graduate",
+        scenario: "Seorang pensyarah kanan berprestasi tinggi di universiti tempatan menerima tawaran gaji tiga kali ganda daripada universiti luar negara. Apakah tindakan paling strategik yang mematuhi pemahaman konsep globalisasi?",
+        options: [
+          {
+            text: "A) Menghalang pensyarah tersebut dengan menyekat pasport dan dokumen akademik beliau.",
+            correct: false,
+            feedback: "Gagal! Dalam era globalisasi, dunia fizikal mungkin bersempadan, tetapi sebarang usaha penyekatan paksa menyalahi prinsip mobiliti tenaga kerja antarabangsa."
+          },
+          {
+            text: "B) Menyediakan insentif penyelidikan, fasiliti moden, serta laluan kerjaya berasaskan prestasi untuk mengekalkan beliau (Brain Gain).",
+            correct: true,
+            feedback: "Cemerlang! Fenomena Brain Drain diimbangi dengan memperkasakan daya tarikan domestik dan pengiktirafan bakat."
+          }
+        ]
+      },
+      {
+        id: 2,
+        title: "KAPITEL 2: Integriti & Komersialisasi Pendidikan",
+        category: "Etika & Pentadbiran",
+        icon: "fa-scale-balanced",
+        scenario: "Sebuah institusi pendidikan swasta bercadang merendahkan gred kelulusan kemasukan bagi pelajar antarabangsa demi mengejar pendapatan modal asing. Sebagai pemimpin akademik, apakah keputusan anda?",
+        options: [
+          {
+            text: "A) Mempertahankan standard akademik antarabangsa dan etika tanpa mengorbankan kualiti demi komersialisasi semata-mata.",
+            correct: true,
+            feedback: "Tepat Sekali! Komersialisasi tidak boleh mengatasi standard kualiti dan integriti ilmu."
+          },
+          {
+            text: "B) Bersetuju dengan cadangan tersebut kerana aliran modal asing (FDI) adalah keutamaan tunggal globalisasi.",
+            correct: false,
+            feedback: "Pilihan Kurang Tepat! Risiko komersialisasi berlebihan boleh merosakkan reputasi dan kualiti sistem pendidikan tempatan."
+          }
+        ]
+      },
+      {
+        id: 3,
+        title: "KAPITEL 3: Penguasaan Bahasa & Identiti Nasional",
+        category: "Sosiologi Pendidikan",
+        icon: "fa-language",
+        scenario: "Dalam mesyuarat kurikulum, wujud cadangan untuk menghapuskan penggunaan Bahasa Melayu sepenuhnya dan menggantikannya dengan Bahasa Inggeris dalam semua mata pelajaran.",
+        options: [
+          {
+            text: "A) Mengamalkan pendekatan dwibahasa: Memperkasakan Bahasa Melayu sebagai bahasa ilmu & identiti, serta menguasai Bahasa Inggeris untuk daya saing global.",
+            correct: true,
+            feedback: "Sangat Bijak! Ini sejajar dengan implikasi positif globalisasi iaitu penguasaan dwibahasa tanpa meminggirkan bahasa ibunda."
+          },
+          {
+            text: "B) Menghentikan terus pengajaran Bahasa Melayu kerana ia tidak mempunyai nilai ekonomi antarabangsa.",
+            correct: false,
+            feedback: "Tindakan Berisiko! Peminggiran bahasa ibunda merupakan salah satu ancaman utama globalisasi yang perlu dielakkan."
+          }
+        ]
+      },
+      {
+        id: 4,
+        title: "KAPITEL 4: Kebanjiran Maklumat Tanpa Tapisan",
+        category: "Epistemologi & IT",
+        icon: "fa-laptop-code",
+        scenario: "Pelajar menggunakan AI dan carian internet secara meluas tetapi sering mengambil maklumat palsu/unverified dalam tugasan P&P. Bagaimanakah pedagogi guru diubah?",
+        options: [
+          {
+            text: "A) Melarang penggunaan internet dan komputer sepenuhnya di dalam bilik darjah.",
+            correct: false,
+            feedback: "Langkah Berundur! Melarang teknologi tidak menyelesaikan masalah dalam perkampungan global."
+          },
+          {
+            text: "B) Menerapkan pemikiran rasionalisme dan literasi digital untuk membimbing pelajar menyaring kebenaran maklumat.",
+            correct: true,
+            feedback: "Tepat! Berdasarkan epistemologi rasionalisme, pendidik harus melatih pelajar menyaring maklumat berasaskan bukti saintifik."
+          }
+        ]
+      }
+    ];
 
-                <div class="final-mission-trigger hidden" id="final-btn-wrapper">
-                    <button class="btn-danger-glow" onclick="openFinalMission()">🔐 TOP SECRET: OPEN THE LAST CLASSROOM</button>
-                </div>
+    let currentMissionIndex = 0;
+    let score = 0;
+
+    function renderMission() {
+      const container = document.getElementById('gamePlayArea');
+      document.getElementById('progressDisplay').innerText = `${currentMissionIndex + 1} / ${missions.length}`;
+
+      if (currentMissionIndex >= missions.length) {
+        container.innerHTML = `
+          <div class="bg-slate-900/90 border border-amber-500/30 p-8 rounded-2xl text-center space-y-6">
+            <div class="w-20 h-20 bg-amber-500/20 text-amber-400 rounded-full flex items-center justify-center mx-auto text-4xl border border-amber-500/40">
+              <i class="fa-solid fa-trophy"></i>
             </div>
-        </section>
-
-        <!-- 3. MISSION 01 SCREEN -->
-        <section id="screen-m1" class="screen hidden">
-            <div class="mission-card card-panel">
-                <div class="mission-badge">MISSION 01 — GLOBAL VILLAGE</div>
-                <h3>SITUASI INVESTIGASI</h3>
-                <p class="scenario-text">"Sebuah universiti di Malaysia kini menawarkan kursus secara langsung kepada pelajar dari 20 buah negara. Apabila dasar pendidikan di satu wilayah berubah, kesannya dirasai oleh komuniti di seluruh dunia."</p>
-
-                <div class="evidence-box">
-                    <h4>BUKTI INTERAKSI GLOBAL:</h4>
-                    <div class="evidence-tags">
-                        <span>🌍 Global Connection</span>
-                        <span>💰 Economy</span>
-                        <span>👥 Society</span>
-                        <span>📚 Education</span>
-                        <span>🌐 Technology</span>
-                    </div>
-                </div>
-
-                <div class="question-box">
-                    <p style="margin-bottom: 10px;">Apakah konsep utama yang menerangkan fenomena dunia yang semakin bersambung dan tanpa sempadan ini?</p>
-                    <div class="options-grid">
-                        <button class="btn-option" onclick="checkM1('LOKALISASI')">A. LOKALISASI</button>
-                        <button class="btn-option" onclick="checkM1('GLOBALISASI')">B. GLOBALISASI</button>
-                        <button class="btn-option" onclick="checkM1('ISOLASI')">C. NATIONALISME TERTUTUP</button>
-                    </div>
-                </div>
-                <div id="m1-feedback" class="feedback-panel hidden"></div>
+            <div class="space-y-2">
+              <h4 class="text-3xl font-black text-white">TAHNIAH! MISI SELESAI</h4>
+              <p class="text-slate-300 text-sm max-w-md mx-auto">Anda telah berjaya menyelesaikan semua cabaran keputusan simulasi Pendidik Global dengan cemerlang.</p>
             </div>
-        </section>
-
-        <!-- 4. MISSION 02 SCREEN -->
-        <section id="screen-m2" class="screen hidden">
-            <div class="mission-card card-panel">
-                <div class="mission-badge">MISSION 02 — FOUR GLOBAL CLUES</div>
-                <h3>BILIK PENYIASATAN DIGITAL</h3>
-                <p style="margin-bottom: 15px;">Klik untuk buka semua 4 Fail Misteri bagi mengenal pasti aspek asas globalisasi:</p>
-
-                <div class="file-grid">
-                    <div class="file-card" onclick="revealFile(1)">
-                        <div class="file-icon">📁</div>
-                        <div class="file-name">FILE A</div>
-                        <div class="file-desc hidden" id="f1">💰 Perdagangan & Urus Niaga Pemindahan</div>
-                    </div>
-                    <div class="file-card" onclick="revealFile(2)">
-                        <div class="file-icon">📁</div>
-                        <div class="file-name">FILE B</div>
-                        <div class="file-desc hidden" id="f2">💵 Pergerakan Modal & Pelaburan</div>
-                    </div>
-                    <div class="file-card" onclick="revealFile(3)">
-                        <div class="file-icon">📁</div>
-                        <div class="file-name">FILE C</div>
-                        <div class="file-desc hidden" id="f3">👥 Pergerakan Manusia / Tenaga Kerja</div>
-                    </div>
-                    <div class="file-card" onclick="revealFile(4)">
-                        <div class="file-icon">📁</div>
-                        <div class="file-name">FILE D</div>
-                        <div class="file-desc hidden" id="f4">📚 Penyebaran Ilmu & Maklumat</div>
-                    </div>
-                </div>
-
-                <div id="m2-activity" class="hidden">
-                    <hr class="cyber-hr">
-                    <h4>LENGKAPKAN PADANAN ASPEK</h4>
-                    <p style="margin-bottom: 10px;">Pilih gabungan yang menyatukan keempat-empat elemen asas globalisasi tersebut:</p>
-                    <button class="btn-option" onclick="checkM2(true)">[ Perdagangan + Modal + Pergerakan Manusia + Penyebaran Ilmu ]</button>
-                    <button class="btn-option" onclick="checkM2(false)">[ Perang + Sempadan Fizikal + Pengasingan Ilmu ]</button>
-                </div>
-                <div id="m2-feedback" class="feedback-panel hidden"></div>
+            <div class="bg-slate-950 p-4 rounded-xl inline-block border border-slate-800">
+              <span class="text-xs text-slate-400 block uppercase">Jumlah Reputasi Akhir</span>
+              <span class="text-3xl font-black text-amber-400">${score} PTS</span>
             </div>
-        </section>
-
-        <!-- 5. MISSION 03 SCREEN -->
-        <section id="screen-m3" class="screen hidden">
-            <div class="mission-card card-panel">
-                <div class="mission-badge">MISSION 03 — VIRTUAL UNIVERSITY</div>
-                <h3>UNIVERSITI FUTURISTIK 2040</h3>
-                <p class="scenario-text">"Pendidikan tidak lagi terikat dengan dinding fizikal. Pelajar belajar dari rumah, berkomunikasi secara langsung menerusi Virtual Classrooms dan mengakses pangkalan data global."</p>
-
-                <p style="margin-bottom: 10px;">Kenal pasti bagaimana Globalisasi & IT mengubah pedagogi pendidikan:</p>
-
-                <div class="options-grid">
-                    <button class="btn-option" onclick="checkM3(1)">A. Mewajibkan kelas bersemuka 100% tanpa sebarang akses internet</button>
-                    <button class="btn-option" onclick="checkM3(2)">B. Membolehkan pembelajaran jarak jauh (Distance Learning) & Online merentasi sempadan</button>
-                    <button class="btn-option" onclick="checkM3(3)">C. Menghapuskan penggunaan peranti digital dalam bilik kuliah</button>
-                </div>
-                <div id="m3-feedback" class="feedback-panel hidden"></div>
+            <div>
+              <button onclick="resetGame()" class="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-extrabold px-8 py-3.5 rounded-xl transition shadow-lg text-sm inline-flex items-center gap-2">
+                <i class="fa-solid fa-rotate-right"></i> Main Semula Misi
+              </button>
             </div>
-        </section>
+          </div>
+        `;
+        return;
+      }
 
-        <!-- 6. MISSION 04 SCREEN -->
-        <section id="screen-m4" class="screen hidden">
-            <div class="mission-card card-panel">
-                <div class="mission-badge">MISSION 04 — OPPORTUNITY OR THREAT?</div>
-                <h3>ANALISIS BUKTI DIGITAL</h3>
-                <p style="margin-bottom: 15px;">Pilih sama ada bukti di bawah merupakan **PELUANG (OPPORTUNITY)** atau **CABARAN (CHALLENGE)**:</p>
-
-                <div id="card-deck">
-                    <!-- Cards injected via JavaScript -->
-                </div>
-
-                <div id="m4-feedback" class="feedback-panel hidden"></div>
+      const m = missions[currentMissionIndex];
+      container.innerHTML = `
+        <div class="bg-slate-900/90 border border-slate-800 p-6 md:p-8 rounded-2xl space-y-6">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+            <div class="flex items-center space-x-3">
+              <div class="p-2.5 bg-amber-500/10 text-amber-400 border border-amber-500/20 rounded-xl">
+                <i class="fa-solid ${m.icon} text-lg"></i>
+              </div>
+              <div>
+                <span class="text-[10px] uppercase font-extrabold tracking-wider text-amber-400 block">${m.category}</span>
+                <h4 class="font-extrabold text-base text-white">${m.title}</h4>
+              </div>
             </div>
-        </section>
+          </div>
 
-        <!-- 7. MISSION 05 SCREEN -->
-        <section id="screen-m5" class="screen hidden">
-            <div class="mission-card card-panel">
-                <div class="mission-badge">MISSION 05 — THE FUTURE TEACHER</div>
-                <h3>SIMULASI PERANAN GURU MASA DEPAN</h3>
-                <p class="scenario-text">"Sebagai pendidik tahun 2040, anda mengajar kelas pelbagai budaya global. Tentukan tindakan strategik yang WAJIB diambil (Tanda pada jawapan yang betul):"</p>
+          <div class="space-y-2">
+            <p class="text-xs text-slate-400 uppercase font-semibold">Situasi Simulasi:</p>
+            <p class="text-sm text-slate-200 leading-relaxed font-medium bg-slate-950/60 p-4 rounded-xl border border-slate-800/80">
+              "${m.scenario}"
+            </p>
+          </div>
 
-                <div class="teacher-checklist">
-                    <label class="check-container">
-                        <input type="checkbox" id="t1"> Menguasai Kemahiran ICT & Digital Pedagogy
-                    </label>
-                    <label class="check-container">
-                        <input type="checkbox" id="t2"> Menolak penggunaan AI dan peranti mudah alih
-                    </label>
-                    <label class="check-container">
-                        <input type="checkbox" id="t3"> Meningkatkan Interaksi & Kesedaran Global
-                    </label>
-                    <label class="check-container">
-                        <input type="checkbox" id="t4"> Mengembangkan Pembelajaran Berterusan (Lifelong Learning)
-                    </label>
-                </div>
+          <div class="space-y-3 pt-2">
+            <p class="text-xs text-slate-400 uppercase font-semibold">Pilih Keputusan Pendidik:</p>
+            ${m.options.map((opt, i) => `
+              <button onclick="makeDecision(${opt.correct}, '${opt.feedback.replace(/'/g, "\\'")}')" class="w-full text-left p-4 bg-slate-950/40 hover:bg-slate-800/80 border border-slate-800 hover:border-amber-500/50 rounded-xl transition text-xs text-slate-200 flex items-start space-x-3 group">
+                <span class="w-6 h-6 rounded-lg bg-slate-800 text-slate-300 group-hover:bg-amber-500 group-hover:text-slate-950 flex items-center justify-center font-bold shrink-0 transition">${i === 0 ? 'A' : 'B'}</span>
+                <span class="pt-0.5 leading-relaxed">${opt.text}</span>
+              </button>
+            `).join('')}
+          </div>
 
-                <button class="btn-primary" onclick="submitM5()">ANALISIS PROFIL GURU</button>
-                <div id="m5-feedback" class="feedback-panel hidden"></div>
-            </div>
-        </section>
+          <div id="gameFeedback" class="hidden p-4 rounded-xl text-xs font-semibold leading-relaxed border"></div>
+        </div>
+      `;
+    }
 
-        <!-- 8. FINAL MISSION / TOP SECRET SCREEN -->
-        <section id="screen-final" class="screen hidden">
-            <div class="mission-card card-panel">
-                <div class="mission-badge danger">🔐 TOP SECRET — THE LAST CLASSROOM</div>
-                <h3>KEPUTUSAN STRATEGIK PENDIDIKAN MASA DEPAN</h3>
-                
-                <div class="evidence-box">
-                    <h4>BUKTI TERKUMPUL:</h4>
-                    <ul style="margin-left: 20px; margin-top: 5px;">
-                        <li>✓ GLOBALISATION: Dunia Saling Berhubung</li>
-                        <li>✓ FOUR CLUES: Trade, Capital, People, Knowledge</li>
-                        <li>✓ VIRTUAL EDUCATION: Pembelajaran Merentas Sempadan</li>
-                        <li>✓ OPPORTUNITY & CHALLENGE: Peluang vs Pengangguran/Commercialisation</li>
-                        <li>✓ FUTURE TEACHER: Guru Berkemahiran ICT & Berfikiran Global</li>
-                    </ul>
-                </div>
+    function makeDecision(isCorrect, feedbackText) {
+      const fb = document.getElementById('gameFeedback');
+      fb.classList.remove('hidden', 'bg-emerald-500/10', 'text-emerald-300', 'border-emerald-500/30', 'bg-rose-500/10', 'text-rose-300', 'border-rose-500/30');
 
-                <p class="scenario-text">"Anda kini bertanggungjawab merancang pendidikan generasi akan datang. Pilih keputusan strategik terbaik:"</p>
+      if (isCorrect) {
+        score += 250;
+        document.getElementById('scoreDisplay').innerText = `${score} PTS`;
+        fb.classList.add('bg-emerald-500/10', 'text-emerald-300', 'border-emerald-500/30');
+        fb.innerHTML = `<div class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-base mt-0.5"></i> <span>${feedbackText} (+250 Reputasi)</span></div>`;
+      } else {
+        fb.classList.add('bg-rose-500/10', 'text-rose-300', 'border-rose-500/30');
+        fb.innerHTML = `<div class="flex items-start gap-2"><i class="fa-solid fa-circle-xmark text-base mt-0.5"></i> <span>${feedbackText} (+0 Reputasi)</span></div>`;
+      }
 
-                <div class="options-grid">
-                    <button class="btn-option" onclick="finishGame('A')">A. Perluas Pembelajaran Digital + Tingkatkan Kemahiran Global Guru + Galakkan Kolaborasi Antarabangsa</button>
-                    <button class="btn-option" onclick="finishGame('B')">B. Kekalkan Kaedah Tradisional Sahaja & Tutup Akses Antarabangsa</button>
-                    <button class="btn-option" onclick="finishGame('C')">C. Jadikan Pendidikan Sebagai Perdagangan Komersial Sepenuhnya Tanpa Kawalan Kualiti</button>
-                </div>
-            </div>
-        </section>
+      setTimeout(() => {
+        currentMissionIndex++;
+        renderMission();
+      }, 3000);
+    }
 
-        <!-- 9. FINAL SCORE & SUMMARY SCREEN -->
-        <section id="screen-summary" class="screen hidden">
-            <div class="card-panel">
-                <h2>MISSION ACCOMPLISHED</h2>
-                <div class="score-board">
-                    <h3>STATUS AGENT: <span id="agent-status" class="cyan-text">...</span></h3>
-                    <h1 style="font-size: 3rem; margin: 10px 0;"><span id="final-score-val">0</span> / 100</h1>
-                    <div id="radar-profile" class="dialog-box"></div>
-                </div>
+    function resetGame() {
+      currentMissionIndex = 0;
+      score = 0;
+      document.getElementById('scoreDisplay').innerText = `0 PTS`;
+      renderMission();
+    }
 
-                <hr class="cyber-hr">
-
-                <div class="summary-section">
-                    <h3>📚 RINGKASAN PEMBELAJARAN (WHAT DID YOU DISCOVER?)</h3>
-                    <div class="summary-grid">
-                        <div class="summary-card">
-                            <h4>GLOBALISASI</h4>
-                            <p>Proses dunia menjadi semakin saling berhubung menerusi jaringan komunikasi dan pergerakan maklumat.</p>
-                        </div>
-                        <div class="summary-card">
-                            <h4>4 ASPEK ASAS</h4>
-                            <p>Perdagangan, Pergerakan Modal, Pergerakan Manusia, dan Penyebaran Ilmu.</p>
-                        </div>
-                        <div class="summary-card">
-                            <h4>PELUANG (OPPORTUNITY)</h4>
-                            <p>Pembelajaran sepanjang hayat, penguasaan teknologi, akses pendidikan terbuka & perkongsian penyelidikan.</p>
-                        </div>
-                        <div class="summary-card">
-                            <h4>CABARAN (CHALLENGE)</h4>
-                            <p>Pengangguran, pengaliran keluar sumber manusia (Brain Drain), peminggiran bahasa & perdagangan pendidikan.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <button class="btn-primary margin-top" onclick="restartGame()">RESTART INVESTIGATION 🔄</button>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- GAME ENGINE SCRIPT -->
-    <script>
-        const gameState = {
-            score: 0,
-            cluesCollected: 0,
-            completedMissions: [false, false, false, false, false, false],
-            soundEnabled: true,
-            m2FilesOpened: 0,
-            m4CurrentCard: 0
-        };
-
-        const m4Cards = [
-            { text: "📚 Pembelajaran Sepanjang Hayat (Lifelong Learning)", type: "OPPORTUNITY", exp: "Pendidikan terbuka membolehkan individu belajar pada bila-bila masa tanpa had umur." },
-            { text: "💻 Penguasaan Teknologi & Kemahiran Digital", type: "OPPORTUNITY", exp: "Globalisasi mendorong integrasi teknologi tinggi dalam pengajaran dan pembelajaran." },
-            { text: "🌍 Pendidikan Terbuka kepada Dunia Luar", type: "OPPORTUNITY", exp: "Akses kepada kursus universiti luar negara menerusi platform antarabangsa." },
-            { text: "🔬 Perkongsian Hasil Penyelidikan Global", type: "OPPORTUNITY", exp: "Keputusan saintifik dan dapatan kajian dikongsi secara global untuk kemajuan bersama." },
-            { text: "👨‍‍💼 Pengangguran Meningkat / Persaingan Sengit", type: "CHALLENGE", exp: "Pasaran kerja global memerlukan kemahiran tinggi; pasaran tempatan menjadi semakin kompetitif." },
-            { text: "🧠 Pengaliran Keluar Sumber Manusia (Brain Drain)", type: "CHALLENGE", exp: "Tenaga pakar berhijrah ke negara luar yang menawarkan ganjaran lebih tinggi." },
-            { text: "🗣️ Peminggiran Bahasa Melayu / Bahasa Tempatan", type: "CHALLENGE", exp: "Penggunaan dominan bahasa antarabangsa dalam wacana global berisiko meminggirkan bahasa kebangsaan." },
-            { text: "💼 Perdagangan / Komersialisasi Pendidikan", type: "CHALLENGE", exp: "Pendidikan berisiko dijadikan komoditi perniagaan berasaskan keuntungan semata-mata." }
-        ];
-
-        function playSound(type) {
-            if (!gameState.soundEnabled) return;
-            try {
-                const ctx = new (window.AudioContext || window.webkitAudioContext)();
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-
-                if (type === 'click') {
-                    osc.frequency.setValueAtTime(400, ctx.currentTime);
-                    gain.gain.setValueAtTime(0.1, ctx.currentTime);
-                    osc.start();
-                    osc.stop(ctx.currentTime + 0.05);
-                } else if (type === 'success') {
-                    osc.frequency.setValueAtTime(600, ctx.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(800, ctx.currentTime + 0.2);
-                    gain.gain.setValueAtTime(0.15, ctx.currentTime);
-                    osc.start();
-                    osc.stop(ctx.currentTime + 0.2);
-                } else if (type === 'wrong') {
-                    osc.frequency.setValueAtTime(200, ctx.currentTime);
-                    gain.gain.setValueAtTime(0.2, ctx.currentTime);
-                    osc.start();
-                    osc.stop(ctx.currentTime + 0.3);
-                }
-            } catch (e) {}
-        }
-
-        function toggleAudio() {
-            gameState.soundEnabled = !gameState.soundEnabled;
-            document.getElementById("sound-toggle").innerText = gameState.soundEnabled ? "🔊 SOUND" : "🔇 MUTED";
-        }
-
-        function showScreen(screenId) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            const target = document.getElementById(screenId);
-            if (target) {
-                target.classList.add('active');
-                window.scrollTo(0, 0);
-            }
-        }
-
-        function updateHUD() {
-            document.getElementById('current-score').innerText = gameState.score;
-            document.getElementById('clue-count').innerText = `${gameState.cluesCollected}/5`;
-        }
-
-        function startInvestigation() {
-            playSound('click');
-            document.getElementById('hud-bar').classList.remove('hidden');
-            showScreen('screen-map');
-        }
-
-        function openMission(num) {
-            playSound('click');
-            if (num === 1) showScreen('screen-m1');
-            else if (num === 2 && gameState.completedMissions[1]) showScreen('screen-m2');
-            else if (num === 3 && gameState.completedMissions[2]) showScreen('screen-m3');
-            else if (num === 4 && gameState.completedMissions[3]) renderM4Card();
-            else if (num === 5 && gameState.completedMissions[4]) showScreen('screen-m5');
-            else alert("🔐 ZON DILOCK! Selesaikan misi terdahulu untuk mendapatkan kunci penyiasatan.");
-        }
-
-        function unlockNextNode(completedNum) {
-            gameState.completedMissions[completedNum] = true;
-            if (completedNum < 5) {
-                const nextNode = document.getElementById(`node-${completedNum + 1}`);
-                if (nextNode) {
-                    nextNode.classList.remove('locked');
-                    nextNode.classList.add('unlocked');
-                }
-            } else {
-                document.getElementById('final-btn-wrapper').classList.remove('hidden');
-            }
-        }
-
-        function checkM1(answer) {
-            const fb = document.getElementById('m1-feedback');
-            fb.classList.remove('hidden');
-
-            if (answer === 'GLOBALISASI') {
-                playSound('success');
-                if (!gameState.completedMissions[1]) {
-                    gameState.score += 20;
-                    gameState.cluesCollected += 1;
-                    unlockNextNode(1);
-                    updateHUD();
-                }
-                fb.className = "feedback-panel correct";
-                fb.innerHTML = `<h4>🔓 CLUE FOUND: GLOBALISATION</h4>
-                                <p><strong>TEPAT!</strong> Globalisasi ialah proses yang membolehkan pasaran, maklumat dan pendidikan merentasi sempadan antarabangsa secara bebas.</p>
-                                <button class="btn-primary" onclick="showScreen('screen-map')">KEMBALI KE PETA GLOBAL</button>`;
-            } else {
-                playSound('wrong');
-                fb.className = "feedback-panel wrong";
-                fb.innerHTML = `<p>❌ <strong>ANALISIS SALAH:</strong> Jawapan tersebut tidak menggambarkan sifat hubungan global tanpa sempadan. Sila cuba lagi.</p>`;
-            }
-        }
-
-        function revealFile(num) {
-            playSound('click');
-            const el = document.getElementById(`f${num}`);
-            if (el.classList.contains('hidden')) {
-                el.classList.remove('hidden');
-                gameState.m2FilesOpened++;
-            }
-            if (gameState.m2FilesOpened >= 4) {
-                document.getElementById('m2-activity').classList.remove('hidden');
-            }
-        }
-
-        function checkM2(isCorrect) {
-            const fb = document.getElementById('m2-feedback');
-            fb.classList.remove('hidden');
-
-            if (isCorrect) {
-                playSound('success');
-                if (!gameState.completedMissions[2]) {
-                    gameState.score += 20;
-                    gameState.cluesCollected += 1;
-                    unlockNextNode(2);
-                    updateHUD();
-                }
-                fb.className = "feedback-panel correct";
-                fb.innerHTML = `<h4>🔓 GLOBAL CODE: IMF-04 FOUND!</h4>
-                                <p>Empat Aspek Asas Globalisasi: Perdagangan, Modal, Pergerakan Manusia & Penyebaran Ilmu.</p>
-                                <button class="btn-primary" onclick="showScreen('screen-map')">KEMBALI KE PETA GLOBAL</button>`;
-            } else {
-                playSound('wrong');
-                fb.className = "feedback-panel wrong";
-                fb.innerHTML = `<p>❌ Padanan tidak tepat. Sila analisis semula 4 fail di atas.</p>`;
-            }
-        }
-
-        function checkM3(choice) {
-            const fb = document.getElementById('m3-feedback');
-            fb.classList.remove('hidden');
-
-            if (choice === 2) {
-                playSound('success');
-                if (!gameState.completedMissions[3]) {
-                    gameState.score += 20;
-                    gameState.cluesCollected += 1;
-                    unlockNextNode(3);
-                    updateHUD();
-                }
-                fb.className = "feedback-panel correct";
-                fb.innerHTML = `<h4>🔓 CLUE FOUND: VIRTUAL CLASSROOM</h4>
-                                <p><strong>TEPAT!</strong> Perkembangan IT & Globalisasi membolehkan penyampaian pendidikan berlaku menerusi platform virtual, jarak jauh dan fleksibel.</p>
-                                <button class="btn-primary" onclick="showScreen('screen-map')">KEMBALI KE PETA GLOBAL</button>`;
-            } else {
-                playSound('wrong');
-                fb.className = "feedback-panel wrong";
-                fb.innerHTML = `<p>❌ Pilihan ini bertentangan dengan trend integrasi teknologi dan pembelajaran merentas sempadan.</p>`;
-            }
-        }
-
-        function renderM4Card() {
-            showScreen('screen-m4');
-            const container = document.getElementById('card-deck');
-            const fb = document.getElementById('m4-feedback');
-            fb.classList.add('hidden');
-
-            if (gameState.m4CurrentCard < m4Cards.length) {
-                const item = m4Cards[gameState.m4CurrentCard];
-                container.innerHTML = `
-                    <div class="m4-card-item">
-                        <h4>BUKTI DIGITAL #${gameState.m4CurrentCard + 1}</h4>
-                        <p style="font-size: 1.2rem; margin: 10px 0;">${item.text}</p>
-                        <div class="m4-actions">
-                            <button class="btn-opp" onclick="answerM4('OPPORTUNITY')">🟢 OPPORTUNITY (PELUANG)</button>
-                            <button class="btn-cha" onclick="answerM4('CHALLENGE')">🔴 CHALLENGE (CABARAN)</button>
-                        </div>
-                    </div>
-                `;
-            } else {
-                if (!gameState.completedMissions[4]) {
-                    gameState.score += 20;
-                    gameState.cluesCollected += 1;
-                    unlockNextNode(4);
-                    updateHUD();
-                }
-                container.innerHTML = `<p class="cyan-text">✓ SEMUA 8 BUKTI DIGITAL TELAH DIKLASIFIKASIKAN!</p>`;
-                fb.classList.remove('hidden');
-                fb.className = "feedback-panel correct";
-                fb.innerHTML = `<h4>🔓 CLUE FOUND: BALANCE OF GLOBALISATION</h4>
-                                <p>Globalisasi membawa **Peluang** (Akses ilmu, kemahiran ICT) tetapi juga **Cabaran** (Brain drain, komersialisasi, isu bahasa).</p>
-                                <button class="btn-primary" onclick="showScreen('screen-map')">KEMBALI KE PETA GLOBAL</button>`;
-            }
-        }
-
-        function answerM4(userChoice) {
-            const item = m4Cards[gameState.m4CurrentCard];
-            if (userChoice === item.type) {
-                playSound('success');
-                alert(`✅ TEPAT! \n\nPenerangan: ${item.exp}`);
-            } else {
-                playSound('wrong');
-                alert(`❌ KURANG TEPAT! \n\nKategori sebenar: ${item.type}\nPenerangan: ${item.exp}`);
-            }
-            gameState.m4CurrentCard++;
-            renderM4Card();
-        }
-
-        function submitM5() {
-            const t1 = document.getElementById('t1').checked;
-            const t2 = document.getElementById('t2').checked;
-            const t3 = document.getElementById('t3').checked;
-            const t4 = document.getElementById('t4').checked;
-
-            const fb = document.getElementById('m5-feedback');
-            fb.classList.remove('hidden');
-
-            if (t1 && !t2 && t3 && t4) {
-                playSound('success');
-                if (!gameState.completedMissions[5]) {
-                    gameState.score += 20;
-                    gameState.cluesCollected += 1;
-                    unlockNextNode(5);
-                    updateHUD();
-                }
-                fb.className = "feedback-panel correct";
-                fb.innerHTML = `<h4>👨‍🏫 FUTURE TEACHER PROFILE GENERATED</h4>
-                                <p><strong>PROFIL GURU MASA DEPAN:</strong><br>
-                                • Kesedaran Global: 95%<br>
-                                • Kemahiran ICT: 90%<br>
-                                • Interaksi & Kolaborasi: 88%</p>
-                                <p>Guru global abad ke-21 mesti bersedia menguasai ICT dan tidak menolak arus teknologi.</p>
-                                <button class="btn-primary" onclick="showScreen('screen-map')">KEMBALI KE PETA GLOBAL</button>`;
-            } else {
-                playSound('wrong');
-                fb.className = "feedback-panel wrong";
-                fb.innerHTML = `<p>❌ Sila semak pilihan anda. Seorang guru masa depan tidak seharusnya menolak penggunaan teknologi digital (seperti AI).</p>`;
-            }
-        }
-
-        function openFinalMission() {
-            playSound('click');
-            showScreen('screen-final');
-        }
-
-        function finishGame(decision) {
-            playSound('success');
-            showScreen('screen-summary');
-
-            const statusEl = document.getElementById('agent-status');
-            const scoreValEl = document.getElementById('final-score-val');
-            scoreValEl.innerText = gameState.score;
-
-            if (decision === 'A') {
-                statusEl.innerText = "🏆 GLOBAL EDUCATION MASTER";
-                statusEl.style.color = "#00ff66";
-            } else {
-                statusEl.innerText = "🔎 GLOBAL EDUCATION INVESTIGATOR";
-                statusEl.style.color = "#ff2a6d";
-            }
-
-            document.getElementById('radar-profile').innerHTML = `
-                <p><strong>KEPUTUSAN STRATEGIK:</strong> ${decision === 'A' ? 'Sangat Holistik & Adaptif' : 'Memerlukan Penambahbaikan Strategik'}</p>
-                <p>Anda telah berjaya meneroka keseluruhan konsep Bab Globalisasi dalam Pendidikan.</p>
-            `;
-        }
-
-        function restartGame() {
-            window.location.reload();
-        }
-    </script>
+    // Initialize Game
+    renderMission();
+  </script>
 </body>
 </html>
